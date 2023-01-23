@@ -1,9 +1,26 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { CustomersModule } from './customers/customers.module';
+import { User } from './users/models/User.entity';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [CustomersModule, UsersModule],
+  imports: [
+    CustomersModule,
+    UsersModule,
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'P@ssw0rd',
+      database: 'nestjs2_course',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
+    }),
+    AuthModule,
+  ],
   controllers: [],
   providers: [],
 })
