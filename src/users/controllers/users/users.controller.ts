@@ -10,9 +10,11 @@ import {
   UseInterceptors,
   Body,
   UsePipes,
+  UseGuards,
 } from '@nestjs/common';
 import { Post } from '@nestjs/common/decorators';
 import { ParseIntPipe, ValidationPipe } from '@nestjs/common/pipes';
+import { AuthenticatedGuard } from 'src/auth/utils/LocalGuard';
 import { CreateUserDTO } from 'src/users/dto/CreateUser.dto';
 import { UserNotFoundException } from 'src/users/exceptions/UserNotFound.exception';
 import { HttpExceptionFilter } from 'src/users/filters/HttpExceptionFilter.filter';
@@ -25,6 +27,7 @@ export class UsersController {
     @Inject('USER_SERVICE') private readonly userService: UsersService,
   ) {}
 
+  @UseGuards(AuthenticatedGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   @Get()
   getUsers() {
